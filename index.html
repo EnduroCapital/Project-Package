@@ -10,8 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-    <!-- Corrected html2pdf.js script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" xintegrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         :root {
             --enduro-bg: #F5F5F5;
@@ -70,7 +68,7 @@
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-            #exportPdfBtn, .no-print {
+            .no-print {
                 display: none;
             }
         }
@@ -145,12 +143,6 @@
                 <p class="text-lg text-gray-500 mt-1">Confidential Information Memorandum</p>
             </div>
             <div class="flex items-center space-x-4">
-                <button id="exportPdfBtn" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors flex items-center no-print">
-                    <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                    </svg>
-                    Export to PDF
-                </button>
                 <a href="https://www.endurocapital.nl/" target="_blank" >
                     <img src="Endurocapita-final.png" alt="Enduro Capital Logo" class="h-12">
                 </a>
@@ -382,29 +374,6 @@
                             }
                         }
                     }
-                });
-            }
-            
-            const exportPdfBtn = document.getElementById('exportPdfBtn');
-            if(exportPdfBtn) {
-                exportPdfBtn.addEventListener('click', () => {
-                    const element = document.getElementById('contentToPrint');
-                    const opt = {
-                      margin:       0.5,
-                      filename:     'Project_Package_CIM.pdf',
-                      image:        { type: 'jpeg', quality: 0.98 },
-                      html2canvas:  { scale: 2, useCORS: true },
-                      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-                    };
-                    
-                    // Temporarily disable chart animations for better PDF rendering
-                    const originalAnimation = Chart.defaults.animation;
-                    Chart.defaults.animation = false;
-                    
-                    html2pdf().set(opt).from(element).save().then(() => {
-                        // Re-enable animations after PDF is generated
-                        Chart.defaults.animation = originalAnimation;
-                    });
                 });
             }
         });
