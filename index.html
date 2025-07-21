@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- Library for advanced PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --enduro-bg: #F5F5F5;
@@ -25,23 +27,21 @@
             color: var(--enduro-text-primary);
         }
         
-        /* --- View Toggling --- */
-        .desktop-view-container { display: block; }
-        .a4-view-container { display: none; }
+        /* --- A4 Page Container (Hidden, for PDF generation only) --- */
+        .a4-view-container { 
+            display: none; 
+            position: absolute;
+            left: -9999px; /* Hide it off-screen */
+        }
 
-        body.a4-mode .desktop-view-container { display: none; }
-        body.a4-mode .a4-view-container { display: block; }
-
-        /* --- A4 Page Container --- */
         .page-a4 {
             width: 210mm;
             height: 297mm;
             padding: 12mm;
-            margin: 1rem auto;
             background: white;
-            box-shadow: 0 0 0.5cm rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
 
         .card {
@@ -57,20 +57,20 @@
         /* Desktop View Specifics */
         .desktop-view-container .card { padding: 1.5rem; }
         .desktop-view-container .card-title { font-size: 1.125rem; }
-                .desktop-view-container .market-icon-container {
+        .desktop-view-container .market-icon-container {
             height: 80px;
             width: 80px;
         }
 
-        /* A4 View Specifics - Reworked for better fit */
-        .a4-view-container .card { padding: 0.7rem; }
-        .a4-view-container .card-title { font-size: 0.9rem; margin-bottom: 0.4rem; padding-bottom: 0.4rem; }
-        .a4-view-container p, .a4-view-container li { font-size: 0.7rem; line-height: 1.35; }
-        .a4-view-container h3 { font-size: 0.8rem; }
-        .a4-view-container .market-icon-container { height: 40px; width: 40px; padding: 0.25rem; margin-bottom: 0.25rem;}
+        /* A4 View Specifics */
+        .a4-view-container .card { padding: 0.6rem; }
+        .a4-view-container .card-title { font-size: 0.85rem; margin-bottom: 0.3rem; padding-bottom: 0.3rem; }
+        .a4-view-container p, .a4-view-container li { font-size: 0.68rem; line-height: 1.3; }
+        .a4-view-container h3 { font-size: 0.75rem; }
+        .a4-view-container .market-icon-container { height: 38px; width: 38px; padding: 0.2rem; margin-bottom: 0.2rem;}
         .a4-view-container .market-icon-container img { border-radius: 0.15rem; }
-        .a4-view-container .text-xs { font-size: 0.65rem; }
-        .a4-view-container .card ul { margin-top: 0.4rem; }
+        .a4-view-container .text-xs { font-size: 0.6rem; }
+        .a4-view-container .card ul { margin-top: 0.3rem; }
 
 
         .market-icon-container {
@@ -89,22 +89,23 @@
             border-radius: 0.25rem;
         }
         
+        /* Print-specific styles for browser's native print function */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
         @media print {
-            body {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                margin: 0;
-                padding: 0;
-                background-color: #fff;
-            }
             .desktop-view-container { display: none !important; }
-            .a4-view-container { display: block !important; }
+            .a4-view-container { 
+                display: block !important; 
+                position: static;
+                left: 0;
+            }
             .page-a4 {
                 margin: 0;
-                box-shadow: none;
                 padding: 10mm;
-                width: 100%;
-                height: 100%;
+                box-shadow: none;
             }
             .no-print { display: none; }
         }
@@ -115,11 +116,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Hover/Load Animations --- */
-        .market-item, .thesis-item, .card ul li { transition: all 0.2s ease-in-out; }
-        .market-item:hover { transform: scale(1.1); }
-        .thesis-item:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        .card ul li:hover svg { transform: scale(1.2); }
     </style>
 </head>
 <body>
@@ -133,12 +129,13 @@
                     <h1 class="text-4xl font-extrabold text-gray-800 tracking-tight">Project Package</h1>
                     <p class="text-lg text-gray-500 mt-1">Confidential Information Memorandum</p>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <button id="toggleViewBtnDesktop" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors flex items-center no-print">
-                        Switch to A4 View
+                <div class="flex items-center space-x-4 no-print">
+                    <!-- New Download PDF Button -->
+                    <button id="downloadPdfBtnDesktop" class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-800 transition-colors flex items-center">
+                        Download PDF
                     </button>
                     <a href="https://www.endurocapital.nl/" target="_blank" >
-                        <img src="Endurocapita-final.png" alt="Enduro Capital Logo" class="h-12">
+                        <img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/Endurocapita-final.png" alt="Enduro Capital Logo" class="h-12">
                     </a>
                 </div>
             </header>
@@ -147,12 +144,10 @@
                 <!-- Left Column -->
                 <div class="lg:col-span-2 flex flex-col gap-6">
                     <div class="card">
-                        <h2 class="card-title">Company Overview</h2>
+                        <h2 class="card-title font-bold">Company Overview</h2>
                         <div class="card-content">
                             <p class="text-gray-600 mb-4">
-                                TargetCo is a European technology firm specializing in non-toxic preservation systems for high-value bulk commodities. Established over a decade ago, the company has developed a proprietary, partially patent-defended approach to extending the shelf life of sensitive agricultural goods.
-                                <br><br>
-                                The core technology utilizes Controlled Atmosphere (CA) and Modified Atmosphere Packaging (MAP)—including specialized equipment for bulk packaging formats—to create ultra-low oxygen environments. This proven, chemical-free method offers a superior alternative to traditional fumigation.
+                                TargetCo is a European technology firm specializing in non-toxic preservation systems for high-value bulk commodities. Established over a decade ago, the company has developed a proprietary, partially patent-defended approach to extending the shelf life of sensitive agricultural goods. The core technology utilizes Controlled Atmosphere (CA) and Modified Atmosphere Packaging (MAP) to create ultra-low oxygen environments by substituting atmospheric air with natural nitrogen. <br> <br>This 100% environmentally friendly technique protects products from insects, toxins, mold, and moisture, offering a superior alternative to traditional fumigation. With a global footprint and projects completed worldwide, the company is perfectly positioned to capitalize on the increasing demand for food safety and waste reduction.
                             </p>
                             <ul class="space-y-4 text-gray-700 text-sm border-t border-gray-200 pt-4">
                                <li class="flex items-start">
@@ -167,7 +162,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <h2 class="card-title">Financials</h2>
+                        <h2 class="card-title font-bold">Financials</h2>
                         <p class="text-gray-600 mb-4 text-sm">TargetCo exhibits a robust financial profile with a growing base of re-occurring revenue from consumables. This indicates high customer retention and increasing utilization of the installed base of systems.</p>
                         <div class="h-80"><canvas id="financialsChartDesktop"></canvas></div>
                     </div>
@@ -175,7 +170,7 @@
                 <!-- Right Column -->
                 <div class="lg:col-span-1 flex flex-col gap-6">
                     <div class="card">
-                        <h2 class="card-title">Key Market & Growth Drivers</h2>
+                        <h2 class="card-title font-bold">Key Market & Growth Drivers</h2>
                         <p class="text-gray-600 mb-3 text-sm">TargetCo operates in the ~$16B Modified Atmosphere Packaging (MAP) market, supported by non-cyclical, structural tailwinds ensuring stable long-term growth (~7.9% CAGR).</p>
                         <ul class="space-y-3 text-gray-700 text-sm">
                              <li class="flex items-start">
@@ -193,44 +188,53 @@
                         </ul>
                     </div>
                      <div class="card">
-                        <h2 class="card-title">Core Target Markets</h2>
+                        <h2 class="card-title font-bold">Core Target Markets</h2>
                         <div class="grid grid-cols-4 gap-4 text-center">
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="tobacco.jpg" alt="Tobacco"></div><p class="text-xs font-medium text-gray-700">Tobacco</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="cashews.webp" alt="Cashews"></div><p class="text-xs font-medium text-gray-700">Cashews</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="coffee.avif" alt="Coffee"></div><p class="text-xs font-medium text-gray-700">Coffee</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="cacao.jpg" alt="Cacao"></div><p class="text-xs font-medium text-gray-700">Cacao</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="almonds.jpg" alt="Almonds"></div><p class="text-xs font-medium text-gray-700">Almonds</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="walnuts.jpg" alt="Walnut"></div><p class="text-xs font-medium text-gray-700">Walnuts</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="raisins.jpg" alt="Raisins"></div><p class="text-xs font-medium text-gray-700">Raisins</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="dried fruits.jpg" alt="Dried Fruits"></div><p class="text-xs font-medium text-gray-700">Dried Fruits</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/tobacco.jpg" alt="Tobacco"></div><p class="text-xs font-medium text-gray-700">Tobacco</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/cashews.webp" alt="Cashews"></div><p class="text-xs font-medium text-gray-700">Cashews</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/coffee.avif" alt="Coffee"></div><p class="text-xs font-medium text-gray-700">Coffee</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/cacao.jpg" alt="Cacao"></div><p class="text-xs font-medium text-gray-700">Cacao</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/almonds.jpg" alt="Almonds"></div><p class="text-xs font-medium text-gray-700">Almonds</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/walnuts.jpg" alt="Walnut"></div><p class="text-xs font-medium text-gray-700">Walnuts</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/raisins.jpg" alt="Raisins"></div><p class="text-xs font-medium text-gray-700">Raisins</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/dried%20fruits.jpg" alt="Dried Fruits"></div><p class="text-xs font-medium text-gray-700">Dried Fruits</p></div>
                         </div>
                     </div>
                     <div class="card">
-                        <h2 class="card-title">Team</h2>
-                        <p class="text-gray-600 mb-3 text-sm">The current team is operationally strong but has opportunities for professionalization and modernization in sales and strategic IT.</p>
+                        <h2 class="card-title font-bold">Team</h2>
+                        <p class="text-gray-600 mb-3 text-sm">The current team seems to be operationally strong but lacks strategic direction, and has opportunities for professionalization and modernization in sales and strategic IT.</p>
                         <div class="h-48 flex items-center justify-center"><canvas id="teamChartDesktop"></canvas></div>
                     </div>
                 </div>
                 <!-- Full-width row at bottom -->
                 <div class="lg:col-span-3 card">
-                    <h2 class="card-title">Investment Thesis</h2>
+                    <h2 class="card-title font-bold">Investment Thesis</h2>
                     <p class="text-gray-600 mb-4 text-sm">Acquire a profitable industrial technology asset with a defensible hardware niche and transform it into a high-growth, tech-enabled service provider with recurring sales. The strategy is to execute a three-pronged value creation plan:</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                        <div class="thesis-item p-4 rounded-lg bg-gray-50 border"><div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-800 mx-auto mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div><h3 class="font-semibold text-black">Professionalize & Scale</h3><p class="text-xs text-gray-600">Implement sophisticated sales and marketing processes to drive growth.</p></div>
-                        <div class="thesis-item p-4 rounded-lg bg-gray-50 border"><div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-800 mx-auto mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path></svg></div><h3 class="font-semibold text-black">Tech-Enablement</h3><p class="text-xs text-gray-600">Integrate "Smart" IoT sensor technology to create a premium, data-driven product offering.</p></div>
-                        <div class="thesis-item p-4 rounded-lg bg-gray-50 border"><div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-800 mx-auto mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5V4H4zm0 0l5 5m-5 0h5v5H4v-5zm0 5l5-5M15 4v5h5V4h-5zm0 0l5 5m-5 0h5v5h-5v-5zm0 5l5-5"></path></svg></div><h3 class="font-semibold text-black">HaaS Transition</h3><p class="text-xs text-gray-600">Pivot the business model to recurring revenue, addressing the customer CapEx barrier.</p></div>
+                        <div class="p-4 rounded-lg bg-gray-50 border"><div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-800 mx-auto mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div><h3 class="font-semibold text-black">Professionalize & Scale</h3><p class="text-xs text-gray-600">Implement sophisticated sales and marketing processes to drive growth in neglected markets.</p></div>
+                        <div class="p-4 rounded-lg bg-gray-50 border"><div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-800 mx-auto mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path></svg></div><h3 class="font-semibold text-black">Tech-Enablement</h3><p class="text-xs text-gray-600">Integrate "Smart" IoT sensor technology to create a premium, data-driven product offering.</p></div>
+                        <div class="p-4 rounded-lg bg-gray-50 border"><div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-800 mx-auto mb-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5V4H4zm0 0l5 5m-5 0h5v5H4v-5zm0 5l5-5M15 4v5h5V4h-5zm0 0l5 5m-5 0h5v5h-5v-5zm0 5l5-5"></path></svg></div><h3 class="font-semibold text-black">HaaS Transition</h3><p class="text-xs text-gray-600">Pivot the business model to recurring revenue, addressing the customer CapEx barrier.</p></div>
                     </div>
                 </div>
                 <div class="lg:col-span-3 mt-6">
                     <section class="card bg-gray-800 text-white">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                            <div>
-                                <h3 class="text-xl font-bold">Invitation for Strategic Discussion</h3>
-                                <p class="text-gray-300 mt-2">To advance this opportunity, we are actively seeking dialogue with:</p>
-                                <ul class="text-gray-400 text-sm mt-4 space-y-2">
-                                    <li>&bull; Industry experts with insights into bulk food commodoties, storage and transport</li>
-                                    <li>&bull; Potential hands-on and hands-off investors interested in a growth platform.</li>
-                                    <li>&bull; Experienced executives (operational or commercial) who could strengthen the future leadership team.</li>
+                        <h2 class="card-title text-white border-gray-700">How can you help us?</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-4">
+                             <div class="space-y-4">
+                                <p class="text-gray-300">To advance this opportunity, we are seeking dialogue with:</p>
+                                <ul class="text-gray-400 text-sm space-y-3">
+                                    <li class="flex items-start space-x-3">
+                                        <div class="flex-shrink-0 h-6 w-6 rounded-full border-2 border-green-500 text-green-400 flex items-center justify-center font-bold text-xs">1</div>
+                                        <span>Industry experts with insights into bulk food commodities, storage, and transport.</span>
+                                    </li>
+                                    <li class="flex items-start space-x-3">
+                                        <div class="flex-shrink-0 h-6 w-6 rounded-full border-2 border-green-500 text-green-400 flex items-center justify-center font-bold text-xs">2</div>
+                                        <span>Potential hands-on and hands-off investors interested in a growth platform.</span>
+                                    </li>
+                                    <li class="flex items-start space-x-3">
+                                        <div class="flex-shrink-0 h-6 w-6 rounded-full border-2 border-green-500 text-green-400 flex items-center justify-center font-bold text-xs">3</div>
+                                        <span>Experienced executives (operational or commercial) who could strengthen the future leadership team.</span>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="flex flex-col sm:flex-row gap-6 sm:gap-10 justify-center md:justify-end">
@@ -252,33 +256,28 @@
         </div>
     </div>
 
-    <!-- Main Container for A4 View -->
+    <!-- A4 Container for PDF Generation -->
     <div class="a4-view-container">
-        <div class="page-a4">
+        <div class="page-a4" id="pageA4">
             <!-- Header -->
             <header class="flex justify-between items-center border-b-2 border-gray-200 pb-1.5 mb-2">
                 <div>
                     <h1 class="text-xl font-extrabold text-gray-800">Project Package</h1>
                     <p class="text-sm text-gray-500">Confidential Information Memorandum</p>
                 </div>
-                <div class="flex items-center space-x-4">
-                     <button id="toggleViewBtnA4" class="bg-white border border-gray-300 text-gray-700 px-3 py-1 rounded-md text-xs font-semibold hover:bg-gray-100 transition-colors flex items-center no-print">
-                        Switch to Desktop View
-                    </button>
-                    <a href="https://www.endurocapital.nl/" target="_blank" >
-                        <img src="Endurocapita-final.png" alt="Enduro Capital Logo" class="h-8">
-                    </a>
-                </div>
+                <a href="https://www.endurocapital.nl/" target="_blank" >
+                    <img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/Endurocapita-final.png" alt="Enduro Capital Logo" class="h-8">
+                </a>
             </header>
             
             <!-- A4 Content Grid -->
             <div class="flex-grow grid grid-cols-2 gap-x-6">
                 <!-- Column 1 -->
-                <div class="flex flex-col gap-y-4">
+                <div class="flex flex-col gap-y-3">
                     <div class="card flex-grow-[3]">
                         <h2 class="card-title">Company Overview</h2>
                         <p class="text-gray-600">
-                            TargetCo is a European technology firm specializing in non-toxic preservation systems for high-value bulk commodities. Established over a decade ago, the company has developed a proprietary, partially patent-defended approach to extending the shelf life of sensitive agricultural goods. The core technology utilizes Controlled Atmosphere (CA) and Modified Atmosphere Packaging (MAP) to create ultra-low oxygen environments, a proven, chemical-free method.
+                           TargetCo is a European technology firm specializing in non-toxic preservation systems for high-value bulk commodities. Established over a decade ago, the company has developed a proprietary, partially patent-defended approach to extending the shelf life of sensitive agricultural goods. The core technology utilizes Controlled Atmosphere (CA) and Modified Atmosphere Packaging (MAP) to create ultra-low oxygen environments by substituting atmospheric air with natural nitrogen.<br><br> This 100% environmentally friendly technique protects products from insects, toxins, mold, and moisture, offering a superior alternative to traditional fumigation. With a global footprint and projects completed worldwide, the company is perfectly positioned to capitalize on the increasing demand for food safety and waste reduction.
                         </p>
                         <ul class="space-y-1 text-gray-700 border-t border-gray-200 pt-1 mt-1">
                            <li class="flex items-start">
@@ -294,28 +293,28 @@
                     <div class="card flex-grow-[2]">
                         <h2 class="card-title">Core Target Markets</h2>
                         <div class="grid grid-cols-4 gap-1 text-center h-full content-center">
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="tobacco.jpg" alt="Tobacco"></div><p class="text-xs">Tobacco</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="cashews.webp" alt="Cashews"></div><p class="text-xs">Cashews</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="coffee.avif" alt="Coffee"></div><p class="text-xs">Coffee</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="cacao.jpg" alt="Cacao"></div><p class="text-xs">Cacao</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="almonds.jpg" alt="Almonds"></div><p class="text-xs">Almonds</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="walnuts.jpg" alt="Walnut"></div><p class="text-xs">Walnuts</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="raisins.jpg" alt="Raisins"></div><p class="text-xs">Raisins</p></div>
-                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="dried fruits.jpg" alt="Dried Fruits"></div><p class="text-xs">Dried Fruits</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/tobacco.jpg" alt="Tobacco"></div><p class="text-xs">Tobacco</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/cashews.webp" alt="Cashews"></div><p class="text-xs">Cashews</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/coffee.avif" alt="Coffee"></div><p class="text-xs">Coffee</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/cacao.jpg" alt="Cacao"></div><p class="text-xs">Cacao</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/almonds.jpg" alt="Almonds"></div><p class="text-xs">Almonds</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/walnuts.jpg" alt="Walnut"></div><p class="text-xs">Walnuts</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/raisins.jpg" alt="Raisins"></div><p class="text-xs">Raisins</p></div>
+                            <div class="market-item"><div class="market-icon-container mx-auto"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/dried%20fruits.jpg" alt="Dried Fruits"></div><p class="text-xs">Dried Fruits</p></div>
                         </div>
                     </div>
                     <div class="card flex-grow-[3]">
                          <h2 class="card-title">Investment Thesis</h2>
                         <p class="mb-1">Acquire a profitable industrial technology asset with a defensible hardware niche and transform it into a high-growth, tech-enabled service provider with recurring sales. The strategy is to execute a three-pronged value creation plan:</p>
                         <div class="grid grid-cols-3 gap-2 text-center border-t border-gray-200 pt-1 mt-1">
-                            <div class="thesis-item"><h3 class="font-semibold text-black">Scale</h3><p class="text-xs text-gray-600">Implement sophisticated sales and marketing processes to drive growth.</p></div>
-                            <div class="thesis-item"><h3 class="font-semibold text-black">Enable</h3><p class="text-xs text-gray-600">Integrate "Smart" IoT sensor technology to create a premium, data-driven product offering.</p></div>
+                            <div class="thesis-item"><h3 class="font-semibold text-black">Scale</h3><p class="text-xs text-gray-600">Implement sophisticated sales and marketing processes to drive growth in neglected markets.</p></div>
+                            <div class="thesis-item"><h3 class="font-semibold text-black">Enable</h3><p class="text-xs text-gray-600">Integrate "Smart" IoT sensor technology to create a complete, data-driven product offering.</p></div>
                             <div class="thesis-item"><h3 class="font-semibold text-black">Transition</h3><p class="text-xs text-gray-600">Pivot the business model to recurring revenue, addressing the customer CapEx barrier.</p></div>
                         </div>
                     </div>
                 </div>
                 <!-- Column 2 -->
-                <div class="flex flex-col gap-y-4">
+                <div class="flex flex-col gap-y-3">
                     <div class="card flex-grow-[2]">
                         <h2 class="card-title">Key Market & Growth Drivers</h2>
                          <p class="text-gray-600">TargetCo operates in the ~$16B Modified Atmosphere Packaging (MAP) market, supported by non-cyclical, structural tailwinds ensuring stable long-term growth (~7.9% CAGR).</p>
@@ -332,20 +331,29 @@
                     </div>
                     <div class="card flex-grow-[2]">
                         <h2 class="card-title">Team Composition</h2>
-                        <p class="mb-1">The current team is operationally strong but has opportunities for professionalization and modernization in sales and strategic IT.</p>
+                        <p class="mb-1">The current team seems to be operationally strong but lacks strategic direction, and has opportunities for professionalization and modernization in sales and strategic IT.</p>
                         <div class="h-full flex items-center justify-center"><canvas id="teamChartA4"></canvas></div>
                     </div>
                 </div>
-                 <div class="col-span-2 mt-4">
+                 <div class="col-span-2 mt-3">
                     <div class="card bg-gray-800 text-white">
-                        <div class="grid grid-cols-2 gap-x-4 items-center">
-                            <div>
-                                <h3 class="text-base font-bold">Invitation for Strategic Discussion</h3>
-                                <p class="text-gray-300 mt-1">To advance this opportunity, we are actively seeking dialogue with:</p>
-                                <ul class="text-gray-400 text-xs mt-1 space-y-0.5">
-                                    <li>&bull; Industry experts with insights into bulk food commodoties, storage and transport</li>
-                                    <li>&bull; Potential hands-on and hands-off investors interested in a growth platform.</li>
-                                    <li>&bull; Experienced executives (operational or commercial) who could strengthen the future leadership team.</li>
+                         <h2 class="card-title text-white border-gray-700">How can you help us?</h2>
+                        <div class="grid grid-cols-2 gap-x-4 items-center pt-2">
+                           <div class="space-y-2">
+                                <p class="text-gray-300 text-xs">To advance this opportunity, we are actively seeking dialogue with:</p>
+                                <ul class="text-gray-400 text-xs space-y-2">
+                                    <li class="flex items-start space-x-2">
+                                        <div class="flex-shrink-0 h-5 w-5 rounded-full border-2 border-green-500 text-green-400 flex items-center justify-center font-bold text-xs">1</div>
+                                        <span>Industry experts with insights into bulk food commodities, storage, and transport.</span>
+                                    </li>
+                                    <li class="flex items-start space-x-2">
+                                        <div class="flex-shrink-0 h-5 w-5 rounded-full border-2 border-green-500 text-green-400 flex items-center justify-center font-bold text-xs">2</div>
+                                        <span>Potential hands-on and hands-off investors interested in a growth platform.</span>
+                                    </li>
+                                    <li class="flex items-start space-x-2">
+                                        <div class="flex-shrink-0 h-5 w-5 rounded-full border-2 border-green-500 text-green-400 flex items-center justify-center font-bold text-xs">3</div>
+                                        <span>Experienced executives (operational or commercial) who could strengthen the future leadership team.</span>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="flex justify-around items-center border-l border-gray-700 pl-4">
@@ -364,8 +372,8 @@
                     </div>
                 </div>
             </div>
-            <footer class="text-center text-gray-500 mt-auto" style="font-size: 0.5rem;">
-                This document is strictly private and confidential and does not constitute an offer to sell or a solicitation of an offer to buy any securities.
+            <footer class="text-center text-gray-500 mt-auto pt-2" style="font-size: 0.5rem;">
+                This document is strictly private and confidential. Please do not share without our prior permission.
             </footer>
         </div>
     </div>
@@ -393,7 +401,7 @@
             const accentGray = '#797979';
 
             // --- Chart Drawing Function ---
-            function drawFinancialsChart(canvasId, isA4 = false) {
+            function drawFinancialsChart(canvasId, isDesktop = false) {
                 const ctx = document.getElementById(canvasId)?.getContext('2d');
                 if (!ctx) return;
                 new Chart(ctx, {
@@ -409,63 +417,87 @@
                     },
                     options: {
                         plugins: {
-                            legend: { display: !isA4, position: 'bottom', labels: { color: chartFontColor, font: { family: 'Inter', size: isA4 ? 8 : 12 } } },
+                            legend: { display: isDesktop, position: 'bottom', labels: { color: chartFontColor, font: { family: 'Inter', size: 12 } } },
                             tooltip: { enabled: true },
                             datalabels: { display: false }
                         },
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
-                            x: { stacked: true, ticks: { color: chartFontColor, font: { family: 'Inter', size: isA4 ? 8 : 12 } }, grid: { display: false } },
-                            y: { stacked: true, beginAtZero: true, title: { display: !isA4, text: 'Revenue (€M)', color: chartFontColor, font: { family: 'Inter', weight: '600' } }, ticks: { color: chartFontColor, font: { family: 'Inter', size: isA4 ? 8 : 12 } }, grid: { color: chartGridColor } },
-                            y1: { position: 'right', beginAtZero: true, title: { display: !isA4, text: 'EBITDA (€M)', color: chartFontColor, font: { family: 'Inter', weight: '600' } }, grid: { drawOnChartArea: false }, ticks: { color: chartFontColor, font: { family: 'Inter', size: isA4 ? 8 : 12 } } }
+                            x: { stacked: true, ticks: { color: chartFontColor, font: { family: 'Inter', size: isDesktop ? 12 : 8 } }, grid: { display: false } },
+                            y: { stacked: true, beginAtZero: true, title: { display: isDesktop, text: 'Revenue (€M)', color: chartFontColor, font: { family: 'Inter', weight: '600' } }, ticks: { color: chartFontColor, font: { family: 'Inter', size: isDesktop ? 12 : 8 } }, grid: { color: chartGridColor } },
+                            y1: { position: 'right', beginAtZero: true, title: { display: isDesktop, text: 'EBITDA (€M)', color: chartFontColor, font: { family: 'Inter', weight: '600' } }, grid: { drawOnChartArea: false }, ticks: { color: chartFontColor, font: { family: 'Inter', size: isDesktop ? 12 : 8 } } }
                         }
                     }
                 });
             }
 
-            function drawTeamChart(canvasId, isA4 = false) {
+            function drawTeamChart(canvasId, isDesktop = false) {
                 const ctx = document.getElementById(canvasId)?.getContext('2d');
                 if (!ctx) return;
                 new Chart(ctx, {
                     type: 'pie',
                     data: {
                         labels: teamData.labels,
-                        datasets: [{ data: teamData.values, backgroundColor: [accentGreen, 'rgba(16, 105, 67, 0.8)', 'rgba(16, 105, 67, 0.6)', 'rgba(16, 105, 67, 0.4)'], borderColor: '#FFFFFF', borderWidth: isA4 ? 2 : 4 }]
+                        datasets: [{ data: teamData.values, backgroundColor: [accentGreen, 'rgba(16, 105, 67, 0.8)', 'rgba(16, 105, 67, 0.6)', 'rgba(16, 105, 67, 0.4)'], borderColor: '#FFFFFF', borderWidth: isDesktop ? 4 : 2 }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
-                            tooltip: { enabled: false },
+                            tooltip: { enabled: true },
                             datalabels: {
-                                formatter: (value, ctx) => ctx.chart.data.labels[ctx.dataIndex],
+                                formatter: (value, ctx) => {
+                                    const label = ctx.chart.data.labels[ctx.dataIndex];
+                                    return `${label}\n${value}`;
+                                },
                                 color: '#fff',
-                                font: { weight: 'bold', size: isA4 ? 8 : 12, family: 'Inter' },
+                                font: { weight: 'bold', size: isDesktop ? 12 : 9, family: 'Inter' },
                                 textAlign: 'center'
                             }
                         }
                     }
                 });
             }
+            
+            // --- PDF Generation Function ---
+            function downloadPDF() {
+                const element = document.getElementById('pageA4');
+                const opt = {
+                    margin:       0,
+                    filename:     'Project-Package-Enduro-Capital.pdf',
+                    image:        { type: 'jpeg', quality: 0.95 },
+                    html2canvas:  { scale: 2, useCORS: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                // Hide the desktop view and show the A4 view for PDF generation
+                document.querySelector('.desktop-view-container').style.display = 'none';
+                document.querySelector('.a4-view-container').style.display = 'block';
+                document.querySelector('.a4-view-container').style.left = '0';
+
+
+                html2pdf().set(opt).from(element).save().then(() => {
+                    // Restore the original view after PDF is saved
+                    document.querySelector('.desktop-view-container').style.display = 'block';
+                    document.querySelector('.a4-view-container').style.display = 'none';
+                    document.querySelector('.a4-view-container').style.left = '-9999px';
+                });
+            }
 
             // Draw initial charts
-            drawFinancialsChart('financialsChartDesktop');
-            drawTeamChart('teamChartDesktop');
-            drawFinancialsChart('financialsChartA4', true);
-            drawTeamChart('teamChartA4', true);
+            drawFinancialsChart('financialsChartDesktop', true);
+            drawTeamChart('teamChartDesktop', true);
+            drawFinancialsChart('financialsChartA4');
+            drawTeamChart('teamChartA4');
 
-            // --- View Toggling Logic ---
-            const toggleButtons = [document.getElementById('toggleViewBtnDesktop'), document.getElementById('toggleViewBtnA4')];
-            toggleButtons.forEach(btn => {
-                if (btn) {
-                    btn.addEventListener('click', () => {
-                        document.body.classList.toggle('a4-mode');
-                    });
-                }
-            });
+            // --- Event Listeners ---
+            const downloadButton = document.getElementById('downloadPdfBtnDesktop');
+            if(downloadButton) {
+                downloadButton.addEventListener('click', downloadPDF);
+            }
         });
     </script>
 </body>
-</html>
+</ht
