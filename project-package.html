@@ -1,0 +1,518 @@
+<!-- Enduro Capital Project Package - Squarespace Premium Code Block Version -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  :root {
+    --enduro-bg: #F5F5F5;
+    --enduro-card-bg: #FFFFFF;
+    --enduro-border: #E5E7EB;
+    --enduro-green: #106943;
+    --enduro-gray: #797979;
+    --enduro-text-primary: #000000;
+    --enduro-shadow: 0 2px 12px rgba(16, 105, 67, 0.07);
+    --enduro-radius: 14px;
+    --enduro-light-gray: #F3F4F6;
+    --enduro-gap: 24px;
+    --footer-contact-indent: 36px;
+  }
+  html, body {
+    height: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: var(--enduro-bg) !important;
+    overflow: auto;
+  }
+  body, .enduro-bg {
+    background: var(--enduro-bg) !important;
+    font-family: 'Inter', sans-serif !important;
+    color: var(--enduro-text-primary);
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    min-width: 100vw;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: auto;
+  }
+  .a4-container {
+    width: 1240px;
+    height: 1754px;
+    aspect-ratio: 1 / 1.414;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    box-sizing: border-box;
+    padding: var(--enduro-gap);
+    min-width: 0;
+    min-height: 0;
+    max-width: 1240px;
+    max-height: 1754px;
+    overflow: hidden;
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .a4-main-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--enduro-gap);
+    min-height: 0;
+  }
+  .main-columns {
+    display: flex;
+    flex-direction: row;
+    gap: var(--enduro-gap);
+    flex: 1 1 0;
+    min-height: 0;
+    min-width: 0;
+  }
+  .main-left-col {
+    flex: 1.15 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--enduro-gap);
+    min-width: 0;
+    min-height: 0;
+  }
+  .main-right-col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--enduro-gap);
+    min-width: 0;
+    min-height: 0;
+  }
+  .thesis-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+  }
+  .enduro-header {
+    grid-area: header;
+    background: none;
+    border: none;
+    border-bottom: 2px solid var(--enduro-border);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0 0 var(--enduro-gap) 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .enduro-header-logo-img {
+    display: block;
+    max-height: 48px;
+    height: 48px;
+    width: auto;
+    margin-bottom: 0;
+    margin-right: 0;
+    order: 2;
+    align-self: flex-end;
+    transition: filter 0.2s, max-height 0.2s;
+  }
+  .enduro-header-logo-link {
+    display: block;
+    order: 2;
+    align-self: flex-end;
+    margin-bottom: 0;
+    margin-right: 0;
+  }
+  .enduro-header-title-block {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .enduro-flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--enduro-gap);
+  }
+  .enduro-card, .enduro-dark-card {
+    background: var(--enduro-card-bg);
+    border: 1px solid var(--enduro-border);
+    box-shadow: var(--enduro-shadow);
+    border-radius: var(--enduro-radius);
+    padding: 22px 28px 22px 28px;
+    margin: 0;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .enduro-dark-card {
+    background: #1F2937 !important;
+    color: #fff !important;
+    border: 1px solid var(--enduro-border);
+    margin-top: var(--enduro-gap);
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+    padding-right: 0;
+  }
+  .footer-contact-col {
+    min-width: 0;
+    flex: 1 1 0;
+    padding-left: var(--footer-contact-indent);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .footer-main-col {
+    flex: 2 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .enduro-thesis-card {
+    background: var(--enduro-light-gray);
+    color: var(--enduro-text-primary);
+    border-radius: var(--enduro-radius);
+    box-shadow: var(--enduro-shadow);
+    padding: 14px 16px 14px 16px;
+    min-width: 160px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1 1 120px;
+    margin-bottom: 0;
+    transition: box-shadow 0.18s, transform 0.18s, background 0.18s;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .enduro-thesis-card:hover {
+    box-shadow: 0 8px 24px rgba(16,105,67,0.13);
+    transform: translateY(-4px) scale(1.03);
+    background: #e5e7eb;
+  }
+  .enduro-section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    margin-top: 0;
+    color: var(--enduro-text-primary);
+    line-height: 1.2;
+    padding-top: 0;
+  }
+  .enduro-dark-card .enduro-section-title {
+    color: #fff;
+  }
+  .enduro-h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--enduro-text-primary);
+    line-height: 1.1;
+  }
+  .enduro-h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    margin-top: 0;
+    color: var(--enduro-text-primary);
+    line-height: 1.2;
+    padding-top: 0;
+  }
+  .enduro-gray { color: var(--enduro-gray) !important; }
+  .enduro-green { color: var(--enduro-green) !important; }
+  .enduro-link { color: var(--enduro-green) !important; text-decoration: underline; }
+  .enduro-link:hover { color: #0e4d32 !important; }
+  .enduro-market-img {
+    width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-bottom: 4px;
+    box-shadow: 0 1px 4px rgba(16,105,67,0.07);
+    border: 1px solid var(--enduro-border);
+    background: #f8fafb;
+    transition: transform 0.18s;
+    min-width: 44px;
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+  .enduro-market-item {
+    transition: transform 0.18s;
+    cursor: pointer;
+    min-width: 0;
+  }
+  .enduro-market-item:hover .enduro-market-img {
+    transform: scale(1.10);
+    box-shadow: 0 8px 24px rgba(16,105,67,0.13);
+  }
+  .enduro-market-label {
+    font-size: 0.95rem;
+    color: var(--enduro-gray);
+    margin-bottom: 0;
+    word-break: break-word;
+  }
+  .enduro-card ul, .enduro-dark-card ul {
+    padding-left: 1.2em;
+    margin: 0;
+    font-size: 1rem;
+  }
+  .enduro-card li, .enduro-dark-card li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+  }
+  .enduro-card p, .enduro-dark-card p {
+    margin-bottom: 12px;
+    color: var(--enduro-gray);
+    font-size: 1rem;
+    line-height: 1.6;
+    word-break: break-word;
+  }
+  .enduro-dark-card .enduro-link { color: #4ade80 !important; }
+  .enduro-dark-card .enduro-link:hover { color: #22c55e !important; }
+  .enduro-contact-block { color: #fff; }
+  .enduro-contact-block .enduro-link { color: #4ade80 !important; }
+  .enduro-contact-block .enduro-link:hover { color: #22c55e !important; }
+  .enduro-contact-block div { color: #bbb; font-size: 0.95rem; }
+  .enduro-contact-block .enduro-contact-name { font-weight: 600; color: #fff; }
+</style>
+<div class="a4-container">
+  <div class="a4-main-content">
+    <div class="enduro-header">
+      <a href="https://www.endurocapital.nl" target="_blank" rel="noopener" class="enduro-header-logo-link">
+        <img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/Endurocapita-final.png" alt="Enduro Capital Logo" class="enduro-header-logo-img" />
+      </a>
+      <div class="enduro-header-title-block">
+        <h1 class="enduro-h1">Project Package</h1>
+        <div class="enduro-gray" style="font-size: 1.1rem;">Confidential Information Memorandum</div>
+      </div>
+    </div>
+    <div class="main-columns">
+      <div class="main-left-col">
+        <div class="enduro-card">
+          <h2 class="enduro-h2">Company Overview</h2>
+          <p>
+            TargetCo is a European technology firm specializing in non-toxic preservation systems for packaging of high-value bulk commodities. Established over a decade ago, the company has developed a proprietary, partially patent-defended approach to extending the shelf life of sensitive agricultural goods. The core technology utilizes Controlled Atmosphere (CA) and Modified Atmosphere Packaging (MAP) to create ultra-low oxygen environments by substituting atmospheric air with natural nitrogen.<br><br>
+            This 100% environmentally friendly technique protects products from insects, toxins, mold, and moisture, offering a superior alternative to traditional fumigation. With a global footprint and projects completed worldwide, the company is perfectly positioned to capitalize on the increasing demand for food safety and waste reduction. <br><br>
+          </p>
+          <ul>
+            <li>
+              <span style="display: flex; align-items: center; margin-top: 2px;">
+                <svg width="20" height="20" fill="none" stroke="var(--enduro-green)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </span>
+              <span><b>Business Model:</b> Operates on a “razor-and-blade” model with initial system sales and a predictable stream of re-occurring revenue from essential consumables.</span>
+            </li>
+            <li>
+              <span style="display: flex; align-items: center; margin-top: 2px;">
+                <svg width="20" height="20" fill="none" stroke="var(--enduro-green)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z"/></svg>
+              </span>
+              <span><b>Intellectual Property:</b> Technology is partially defended by a portfolio of patents, creating a competitive moat.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="enduro-card">
+          <h2 class="enduro-h2">Financials</h2>
+          <p>TargetCo exhibits a robust financial profile with a growing base of re-occurring revenue from consumables. This indicates high customer retention and increasing utilization of the installed base of systems.</p>
+          <div style="height: 260px;">
+            <canvas id="financialsChartDesktop" role="img" aria-label="Financials chart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="main-right-col">
+        <div class="enduro-card">
+          <h2 class="enduro-h2">Key Market & Growth Drivers</h2>
+          
+          <ul>
+            <li>
+              <span style="display: flex; align-items: center; margin-top: 2px;">
+                <svg width="20" height="20" fill="none" stroke="var(--enduro-green)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.004 9.004 0 013 12c0-1.612.449-3.11 1.22-4.418"/></svg>
+              </span>
+              <span><b>Sustainability Mandate:</b> Shift away from chemical fumigants towards non-toxic alternatives.</span>
+            </li>
+            <li>
+              <span style="display: flex; align-items: center; margin-top: 2px;">
+                <svg width="20" height="20" fill="none" stroke="var(--enduro-green)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+              </span>
+              <span><b>Food Waste Reduction:</b> Critical technology for extending shelf life and preserving value.</span>
+            </li>
+            <li>
+              <span style="display: flex; align-items: center; margin-top: 2px;">
+                <svg width="20" height="20" fill="none" stroke="var(--enduro-green)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z"/></svg>
+              </span>
+              <span><b>Supply Chain Integrity:</b> Advanced packaging needed to protect quality in global trade.</span>
+            </li>
+          </ul>
+      
+        </div>
+        <div class="enduro-card">
+          <h2 class="enduro-h2">Core Target Markets</h2>
+          <p style="margin-top: 12px; color: var(--enduro-gray); font-size: 1rem;">TargetCo's technology is applicable to a wide range of high-value commodities characterized by high spoilage risk, long-distance transport, and a strong need for quality preservation.</p>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center;">
+              <div class="enduro-market-item"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/cashews.webp" alt="Cashews - Enduro Capital Market" loading="lazy" class="enduro-market-img"><div class="enduro-market-label">Cashews</div></div>
+            <div class="enduro-market-item"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/coffee.avif" alt="Coffee - Enduro Capital Market" loading="lazy" class="enduro-market-img"><div class="enduro-market-label">Coffee</div></div>
+           <div class="enduro-market-item"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/tobacco.jpg" alt="Tobacco - Enduro Capital Market" loading="lazy" class="enduro-market-img"><div class="enduro-market-label">Tobacco</div></div>
+           <div class="enduro-market-item"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/cacao.jpg" alt="Cacao - Enduro Capital Market" loading="lazy" class="enduro-market-img"><div class="enduro-market-label">Cacao</div></div>
+            <div class="enduro-market-item"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/almonds.jpg" alt="Almonds - Enduro Capital Market" loading="lazy" class="enduro-market-img"><div class="enduro-market-label">Almonds</div></div>
+            <div class="enduro-market-item"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/walnuts.jpg" alt="Walnuts - Enduro Capital Market" loading="lazy" class="enduro-market-img"><div class="enduro-market-label">Walnuts</div></div>
+            <div class="enduro-market-item"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/raisins.jpg" alt="Raisins - Enduro Capital Market" loading="lazy" class="enduro-market-img"><div class="enduro-market-label">Raisins</div></div>
+            <div class="enduro-market-item"><img src="https://raw.githubusercontent.com/EnduroCapital/Project-Package/main/dried%20fruits.jpg" alt="Dried Fruits - Enduro Capital Market" loading="lazy" class="enduro-market-img"><div class="enduro-market-label">Dried Fruits</div></div>
+          </div>
+          
+        </div>
+        <div class="enduro-card">
+          <h2 class="enduro-h2">Team</h2>
+          <p>The current team seems to be operationally strong but lacks strategic direction, and has opportunities for professionalization and modernization in sales and strategic IT.</p>
+          <div style="height: 180px;">
+            <canvas id="teamChartDesktop" role="img" aria-label="Team chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="thesis-row">
+      <div class="enduro-card">
+        <h2 class="enduro-section-title">Investment Thesis</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px;">
+          <div class="enduro-thesis-card">
+            <span style="display: flex; align-items: center; margin-top: 2px;">
+              <svg width="24" height="24" fill="none" stroke="var(--enduro-green)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </span>
+            <span><b>Professionalize & Scale</b><div style="font-size: 0.95rem; font-weight: 400;">Implement sophisticated sales and marketing processes to drive growth in neglected markets.</div></span>
+          </div>
+          <div class="enduro-thesis-card">
+            <span style="display: flex; align-items: center; margin-top: 2px;">
+              <svg width="24" height="24" fill="none" stroke="var(--enduro-green)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+            <span><b>Tech-Enablement</b><div style="font-size: 0.95rem; font-weight: 400;">Integrate “Smart” IoT sensor technology to create a premium, data-driven product offering.</div></span>
+          </div>
+          <div class="enduro-thesis-card">
+            <span style="display: flex; align-items: center; margin-top: 2px;">
+              <svg width="24" height="24" fill="none" stroke="var(--enduro-green)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5V4H4zm0 0l5 5m-5 0h5v5H4v-5zm0 5l5-5M15 4v5h5V4h-5zm0 0l5 5m-5 0h5v5h-5v-5zm0 5l5-5"/></svg>
+            </span>
+            <span><b>HaaS Transition</b><div style="font-size: 0.95rem; font-weight: 400;">Pivot the business model to recurring revenue, addressing the customer CapEx barrier.</div></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="enduro-dark-card">
+    <div class="footer-main-col">
+      <h2 class="enduro-section-title">Searching for Partners and Collaborators</h2>
+      <div style="color: #d1d5db; font-size: 1rem; margin-bottom: 10px;">To futher investigate this opportunity, we are seeking connections with:</div>
+      <ul>
+        <li>
+          <span style="display: flex; align-items: center; margin-top: 2px;">
+            <svg width="20" height="20" fill="none" stroke="#34D399" stroke-width="1" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="#34D399" font-family="Arial" dy="-2">1</text></svg>
+          </span>
+          <span><strong>Industry Experts</strong> with insights into bulk food commodities, storage, and transport.</span>
+        </li>
+        <li>
+          <span style="display: flex; align-items: center; margin-top: 2px;">
+            <svg width="20" height="20" fill="none" stroke="#34D399" stroke-width="1" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="#34D399" font-family="Arial" dy="-2">2</text></svg>
+          </span>
+          <span><strong>Investors</strong> (hands-on or hands-off) interested in backing a growth platform.</span>
+        </li>
+        <li>
+          <span style="display: flex; align-items: center; margin-top: 2px;">
+            <svg width="20" height="20" fill="none" stroke="#34D399" stroke-width="1" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="#34D399" font-family="Arial" dy="-2">3</text></svg>
+          </span>
+          <span><strong>Experienced Executives </strong>(operational or commercial) to help build the future leadership team.</span>
+        </li>
+      </ul>
+    </div>
+    <div class="footer-contact-col">
+      <div class="enduro-contact-name">Martijn de Blaey</div>
+      <a href="mailto:Martijn@endurocapital.nl" class="enduro-link">Martijn@endurocapital.nl</a>
+      <div>06-525486043</div>
+      <div class="enduro-contact-name" style="margin-top: 1.2em;">Ebel Weelinck</div>
+      <a href="mailto:Ebel@endurocapital.nl" class="enduro-link">Ebel@endurocapital.nl</a>
+      <div>06-41733807</div>
+    </div>
+  </div>
+</div>
+<!-- Chart.js and chart rendering -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<script>
+Chart.register(ChartDataLabels);
+const financialsData = {
+  labels: ['2023', '2024', '2025 (E)'],
+  machines: [2.9, 2.8, 2.5],
+  supplies: [2.7, 5.7, 6.4],
+  other: [1.2, 0.6, 2.7],
+  ebitda: [1.1, 1.1, 1.6]
+};
+const teamData = {
+  labels: ['Sales', 'Operations', 'Eng. & IT', 'Other'],
+  values: [4, 3, 2, 3]
+};
+function drawFinancialsChart() {
+  const ctx = document.getElementById('financialsChartDesktop')?.getContext('2d');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: financialsData.labels,
+      datasets: [
+        { label: 'Supplies', data: financialsData.supplies, backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--enduro-green').trim(), stack: 'Revenue', order: 2 },
+        { label: 'Machines', data: financialsData.machines, backgroundColor: 'rgba(16, 105, 67, 0.7)', stack: 'Revenue', order: 2 },
+        { label: 'Other', data: financialsData.other, backgroundColor: 'rgba(16, 105, 67, 0.4)', stack: 'Revenue', order: 2 },
+        { label: 'EBITDA', data: financialsData.ebitda, backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--enduro-gray').trim(), borderColor: getComputedStyle(document.documentElement).getPropertyValue('--enduro-gray').trim(), type: 'line', yAxisID: 'y1', tension: 0.3, order: 1 }
+      ]
+    },
+    options: {
+      plugins: {
+        legend: { display: true, position: 'bottom', labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--enduro-gray').trim(), font: { family: 'Inter', size: 12 } } },
+        tooltip: { enabled: true },
+        datalabels: { display: false }
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { stacked: true, ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--enduro-gray').trim(), font: { family: 'Inter', size: 12 } }, grid: { display: false } },
+        y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Revenue (€M)', color: getComputedStyle(document.documentElement).getPropertyValue('--enduro-gray').trim(), font: { family: 'Inter', weight: '600' } }, ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--enduro-gray').trim(), font: { family: 'Inter', size: 12 } }, grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--enduro-border').trim() } },
+        y1: { position: 'right', beginAtZero: true, title: { display: true, text: 'EBITDA (€M)', color: getComputedStyle(document.documentElement).getPropertyValue('--enduro-gray').trim(), font: { family: 'Inter', weight: '600' } }, grid: { drawOnChartArea: false }, ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--enduro-gray').trim(), font: { family: 'Inter', size: 12 } } }
+      }
+    }
+  });
+}
+function drawTeamChart() {
+  const ctx = document.getElementById('teamChartDesktop')?.getContext('2d');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: teamData.labels,
+      datasets: [{ data: teamData.values, backgroundColor: [getComputedStyle(document.documentElement).getPropertyValue('--enduro-green').trim(), 'rgba(16, 105, 67, 0.8)', 'rgba(16, 105, 67, 0.6)', 'rgba(16, 105, 67, 0.4)'], borderColor: '#FFFFFF', borderWidth: 4 }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: true },
+        datalabels: {
+          formatter: (value, ctx) => {
+            const label = ctx.chart.data.labels[ctx.dataIndex];
+            return `${label}\n${value}`;
+          },
+          color: '#fff',
+          font: { weight: 'bold', size: 12, family: 'Inter' },
+          textAlign: 'center'
+        }
+      }
+    }
+  });
+}
+window.addEventListener('DOMContentLoaded', function() {
+  drawFinancialsChart();
+  drawTeamChart();
+});
+</script>
